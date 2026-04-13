@@ -1,0 +1,212 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ========== 固定粉绿渐变 + 新拟态 ========== */
+:root {
+    --bg-gradient: linear-gradient(135deg, #fad1e6 0%, #c8e6d9 100%);
+    
+    /* 新拟态基础色 (浅粉白) */
+    --neu-bg: #f5e6ef;
+    --neu-shadow-light: #ffffff;
+    --neu-shadow-dark: #d9c5d0;
+    
+    /* 组件背景 (半透明，透出渐变) */
+    --ball-bg: rgba(255, 250, 245, 0.6);
+    --glass-bg: rgba(255, 250, 245, 0.5);
+    --quote-bg: rgba(255, 250, 245, 0.75);
+    --toggle-bg: rgba(255, 250, 245, 0.6);
+    
+    /* 文字色 */
+    --text-dark: #4a3b4a;
+    --text-soft: #6e5b6e;
+    
+    /* 新拟态阴影 */
+    --neu-shadow: 8px 8px 16px var(--neu-shadow-dark), 
+                  -6px -6px 14px var(--neu-shadow-light);
+    --neu-shadow-inset: inset 4px 4px 8px var(--neu-shadow-dark), 
+                        inset -3px -3px 6px var(--neu-shadow-light);
+    
+    --border: transparent;
+    --blur-amount: 0px;
+}
+
+/* ========== 全局样式 ========== */
+body {
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif;
+    padding: 16px;
+    position: relative;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* 主球体 */
+.ball {
+    width: min(75vw, 75vh, 400px);
+    height: min(75vw, 75vh, 400px);
+    background: var(--ball-bg);
+    border-radius: 50%;
+    box-shadow: var(--neu-shadow);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    border: 1px solid var(--border);
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    color: var(--text-dark);
+    text-shadow: 0 1px 4px rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    transition: box-shadow 0.2s, background 0.2s;
+}
+
+/* 取消点击反馈 */
+.ball:active {
+    transform: none;
+    box-shadow: var(--neu-shadow);
+}
+
+.days-wrapper {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+}
+
+#days {
+    font-size: min(20vw, 20vh, 120px);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--text-dark);
+    letter-spacing: 2px;
+    text-shadow: 0 2px 6px rgba(255, 255, 255, 0.6);
+}
+
+.unit {
+    font-size: min(7vw, 7vh, 36px);
+    font-weight: 500;
+    color: var(--text-soft);
+    opacity: 0.9;
+}
+
+.timer {
+    font-size: min(5.5vw, 5.5vh, 30px);
+    font-weight: 600;
+    font-family: 'Courier New', 'Fira Code', monospace;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    padding: 8px 20px;
+    border-radius: 60px;
+    margin-top: 10px;
+    box-shadow: var(--neu-shadow);
+    color: var(--text-dark);
+    letter-spacing: 3px;
+    border: 1px solid var(--border);
+}
+
+.target-label {
+    margin-top: 16px;
+    font-size: min(4.2vw, 20px);
+    font-weight: 500;
+    color: var(--text-dark);
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--blur-amount));
+    -webkit-backdrop-filter: blur(var(--blur-amount));
+    padding: 6px 20px;
+    border-radius: 40px;
+    border: 1px solid var(--border);
+    box-shadow: var(--neu-shadow);
+}
+
+/* 心灵鸡汤卡片：添加背景模糊，出现动画1s，消退动画0.5s */
+.quote-card {
+    position: fixed;
+    max-width: 80vw;
+    padding: 18px 26px;
+    background: var(--quote-bg);
+    backdrop-filter: blur(8px);  /* 新增背景模糊 */
+    -webkit-backdrop-filter: blur(8px);
+    color: var(--text-dark);
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.6;
+    border-radius: 40px;
+    box-shadow: var(--neu-shadow);
+    text-align: center;
+    word-break: break-word;
+    z-index: 100;
+    pointer-events: none;
+    border: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards, floatSoft 3.5s infinite ease-in-out; /* 出现动画1s */
+    will-change: transform, opacity;
+    text-shadow: 0 1px 4px rgba(255,255,255,0.4);
+    transition: background 0.2s;
+}
+
+.quote-card.fade-out {
+    animation: fadeOut 0.5s forwards !important; /* 消退动画保持0.5s */
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(12px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-8px) scale(0.98); }
+}
+
+@keyframes floatSoft {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+.hint {
+    margin-top: 24px;
+    color: var(--text-soft);
+    font-size: 1rem;
+    font-weight: 400;
+    opacity: 0.9;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: 40px;
+    background: var(--glass-bg);
+    border: 1px solid var(--border);
+    box-shadow: var(--neu-shadow);
+}
+
+/* 响应式 */
+@media (max-width: 480px) {
+    .ball {
+        width: 85vw;
+        height: 85vw;
+    }
+    #days {
+        font-size: 26vw;
+    }
+    .quote-card {
+        font-size: 1rem;
+        padding: 14px 20px;
+    }
+}
